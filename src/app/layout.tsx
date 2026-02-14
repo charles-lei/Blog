@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Geek Blog",
+  title: "Lei Blog",
   description: "A minimalist tech-focused blog",
-  authors: [{ name: "Your Name" }],
+  authors: [{ name: "Leili" }],
   keywords: ["blog", "tech", "programming", "geek"],
 };
 
