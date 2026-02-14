@@ -1,0 +1,308 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* Dark Theme (default) - Modern Tech Style */
+:root,
+html.dark {
+  --background: #0a0a0f;
+  --background-secondary: #111118;
+  --foreground: #e4e4e7;
+  --foreground-muted: #a1a1aa;
+  --border: #27272a;
+  --border-subtle: #1f1f23;
+  --accent: #22d3ee;
+  --accent-hover: #06b6d4;
+  --accent-secondary: #a78bfa;
+  --accent-tertiary: #4ade80;
+  --card-bg: #141419;
+  --card-hover: #1c1c22;
+  --code-bg: #18181b;
+  --heading: #f4f4f5;
+  --link: #22d3ee;
+  --link-hover: #67e8f9;
+  --tag-bg: #27272a;
+  --tag-text: #a1a1aa;
+  --selection-bg: #22d3ee;
+  --selection-text: #0a0a0f;
+}
+
+/* Light Theme */
+html.light {
+  --background: #fafafa;
+  --background-secondary: #f4f4f5;
+  --foreground: #18181b;
+  --foreground-muted: #52525b;
+  --border: #e4e4e7;
+  --border-subtle: #f0f0f0;
+  --accent: #0891b2;
+  --accent-hover: #0e7490;
+  --accent-secondary: #7c3aed;
+  --accent-tertiary: #16a34a;
+  --card-bg: #ffffff;
+  --card-hover: #f8f8f8;
+  --code-bg: #f4f4f5;
+  --heading: #18181b;
+  --link: #0891b2;
+  --link-hover: #0e7490;
+  --tag-bg: #e4e4e7;
+  --tag-text: #52525b;
+  --selection-bg: #22d3ee;
+  --selection-text: #0a0a0f;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.7;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Links */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground-muted);
+}
+
+/* Code block styling */
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 20px;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  position: relative;
+}
+
+pre::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  background: var(--border-subtle);
+  border-radius: 12px 12px 0 0;
+  opacity: 0.5;
+}
+
+pre code {
+  position: relative;
+  display: block;
+  padding-top: 24px;
+}
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--code-bg);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.875em;
+  color: var(--accent);
+  border: 1px solid var(--border-subtle);
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+  color: var(--foreground);
+  border: none;
+}
+
+/* Selection */
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-text);
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px var(--accent); }
+  50% { box-shadow: 0 0 20px var(--accent), 0 0 30px var(--accent); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Card hover effect */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  background: var(--card-hover);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Accent border left */
+.accent-border-left {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.5rem;
+}
+
+/* Tag styling */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  background: var(--accent);
+  color: var(--background);
+}
+
+/* Prose content styling */
+.prose {
+  color: var(--foreground);
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  color: var(--heading);
+  font-weight: 600;
+}
+
+.prose p {
+  color: var(--foreground-muted);
+  line-height: 1.8;
+}
+
+.prose a {
+  color: var(--link);
+}
+
+.prose a:hover {
+  color: var(--link-hover);
+}
+
+.prose strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.prose ul, .prose ol {
+  color: var(--foreground-muted);
+}
+
+.prose li {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+  color: var(--foreground-muted);
+  font-style: italic;
+}
+
+/* Line clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+/* Subtle glow effect on interactive elements */
+html.dark .glow-subtle:hover {
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.15);
+}
+
+/* Page transition */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}

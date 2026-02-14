@@ -1,0 +1,88 @@
+---
+title: "Bash Aliases Every Developer Should Have"
+date: "2025-02-08"
+excerpt: "Save time and boost your productivity with these essential bash aliases that every developer should know."
+tags: ["bash", "productivity", "terminal"]
+readTime: "6 min"
+---
+
+As developers, we spend a significant amount of time in the terminal. Bash aliases are a simple yet powerful way to speed up your workflow and reduce repetitive typing.
+
+## What are bash aliases?
+
+An alias is a shortcut for a longer command. Instead of typing `git status` every time, you could just type `gst`.
+
+## Essential aliases
+
+### Git aliases
+
+```bash
+# Status, add, commit
+alias gst='git status'
+alias ga='git add'
+alias gc='git commit -m'
+alias gp='git push'
+
+# Branch operations
+alias gb='git branch'
+alias gco='git checkout'
+alias gcb='git checkout -b'
+
+# Log and diff
+alias gl='git log --oneline --graph --all'
+alias gd='git diff'
+```
+
+### Navigation aliases
+
+```bash
+# Quick navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ll='ls -la'
+alias la='ls -A'
+```
+
+### System aliases
+
+```bash
+# System operations
+alias update='sudo apt update && sudo apt upgrade'
+alias ports='netstat -tulanp'
+alias myip='curl ifconfig.co'
+```
+
+## Setting up your aliases
+
+Add these to your `~/.bashrc` or `~/.zshrc`:
+
+```bash
+# Add to your shell config
+echo 'alias gst="git status"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+## Pro tip: Create functions
+
+For more complex operations, use functions:
+
+```bash
+# Create and switch to new branch
+function gnew() {
+  git checkout -b "$1"
+}
+
+# Quick commit
+function gcm() {
+  git add -A
+  git commit -m "$1"
+}
+```
+
+## Conclusion
+
+These small optimizations compound over time. Invest a few minutes setting up your aliases, and you'll save hours in the long run.
+
+---
+
+*What are your favorite aliases? Share them with me on [GitHub](https://github.com)!*

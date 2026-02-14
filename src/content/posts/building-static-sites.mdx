@@ -1,0 +1,55 @@
+---
+title: "The Beauty of Static Sites"
+date: "2025-02-10"
+excerpt: "Static sites are fast, secure, and simple. In this post, I explore why they might be the perfect choice for your next project."
+tags: ["web", "performance"]
+readTime: "4 min"
+---
+
+Static sites are making a comeback, and for good reason. They offer simplicity, performance, and security that dynamic sites often struggle to match.
+
+## What is a static site?
+
+A static site is a website that serves pre-built HTML, CSS, and JavaScript files. There's no server-side processing happening for each request.
+
+## The advantages
+
+```typescript
+// Static site: Just serve files
+app.use(express.static('dist'));
+
+// Dynamic site: Database queries, templating, etc.
+app.get('/posts/:id', async (req, res) => {
+  const post = await db.findPost(req.params.id);
+  res.render('post', { post });
+});
+```
+
+1. **Performance**: No database queries, no server processing
+2. **Security**: No SQL injection, no server-side vulnerabilities
+3. **Cost**: Can be hosted on CDNs for free
+4. **Reliability**: No server to crash or scale
+
+## The modern approach
+
+Modern static site generators like Next.js, Astro, and Hugo combine the benefits of static sites with developer-friendly workflows:
+
+- Write in React/Vue components
+- Use modern tooling (TypeScript, ESLint, Prettier)
+- Deploy to CDN with a single command
+
+```bash
+# Build your static site
+npm run build
+
+# Deploy to Vercel
+vercel deploy
+```
+
+## Conclusion
+
+For most content-focused sites (blogs, documentation, marketing pages), static is the way to go. Fast, secure, and simple.
+
+---
+
+*This blog itself is built with Next.js and deployed as a static site!*
