@@ -1,0 +1,50 @@
+---
+title: "基于K8S的GPU虚拟化实践"
+date: "2026-02-14"
+excerpt: "本文介绍基于 Kubernetes 的 GPU 虚拟化实践方案，通过 KubeSphere 和 NVIDIA GPU Operator 实现 GPU 资源的高效利用。"
+tags: ["kubernetes", "gpu", "virtualization", "devops"]
+readTime: "5 min"
+---
+
+## 简介
+
+在深度学习和 AI 应用日益普及的今天，GPU 资源的高效利用变得尤为重要。本文介绍基于 Kubernetes (K8S) 的 GPU 虚拟化实践方案，帮助您实现 GPU 资源的灵活分配和高效管理。
+
+## 方案概述
+
+### KubeSphere 多节点融合管理
+
+KubeSphere 是一个开源的容器平台，提供了强大的多节点集群管理能力，可以方便地管理 GPU 节点。
+
+![KubeSphere 多节点管理](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/eLbnj8M24MmrOaNY/img/498c0bd4-928e-48bb-996b-0d5a19308634.png)
+
+![KubeSphere 集群视图](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/eLbnj8M24MmrOaNY/img/4e89c6ee-5197-4aa1-a483-be5be82c95b2.png)
+
+### GPU 虚拟化示例
+
+通过 GPU 虚拟化技术，可以将物理 GPU 切分为多个虚拟 GPU 供不同的 Pod 使用。
+
+**虚拟化之前**：集群中有 8 块物理 GPU：
+
+![虚拟化前 GPU 状态](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/eLbnj8M24MmrOaNY/img/695d9665-df24-48cc-ab37-cecb37d650d6.png)
+
+**虚拟化之后**：可以将 8 块 GPU 虚拟化为 32 个（或更多）虚拟 GPU 供 K8S 使用：
+
+![虚拟化后 GPU 资源](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/eLbnj8M24MmrOaNY/img/aa7ddbbc-8b2d-4850-b652-7a29ac0e1cdb.png)
+
+![GPU 资源分配详情](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/eLbnj8M24MmrOaNY/img/b408acc9-6d01-4b0d-b367-81f27c5812ce.png)
+
+## 工具参考
+
+- **[KubeSphere](https://github.com/kubesphere)** - 开源容器平台，提供多租户、多集群管理
+- **[GPU Operator + GPU Time Slicing](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html)** - NVIDIA 官方的 GPU 管理方案，支持时间切片虚拟化
+
+## 其他 HCI 方案（开源）
+
+如果您正在寻找超融合基础设施 (HCI) 解决方案，可以考虑：
+
+- **[Harvester](https://docs.harvesterhci.io/)** - 基于 KubeVirt 的开源 HCI 解决方案
+
+---
+
+*希望这篇文章对您有所帮助！如果您有任何问题或建议，欢迎在评论区留言。*

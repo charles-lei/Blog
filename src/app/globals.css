@@ -343,3 +343,54 @@ html.dark .glow-subtle:hover {
   transform: translateY(0);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  /* Reduce card hover effects on mobile */
+  .card-hover:hover {
+    transform: none;
+  }
+
+  /* Adjust accent border for mobile */
+  .accent-border-left {
+    border-left-width: 2px;
+    padding-left: 1rem;
+  }
+
+  /* Smaller code blocks on mobile */
+  pre {
+    padding: 16px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  pre code {
+    padding-top: 16px;
+  }
+
+  /* Adjust shiki code blocks */
+  .shiki-code pre {
+    padding: 16px;
+  }
+
+  .shiki-code code {
+    font-size: 12px;
+  }
+
+  /* Smaller tags on mobile */
+  .tag {
+    padding: 0.125rem 0.5rem;
+    font-size: 0.65rem;
+  }
+
+  /* Adjust touch targets */
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Better tap targets for nav links */
+  nav a {
+    padding: 0.5rem 0.25rem;
+  }
+}
