@@ -1,13 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { getAllPostIds, getPostData, getAllPosts } from "@/lib/posts";
-import fs from "fs";
-import path from "path";
+import { getAllPostIds, getPostData } from "@/lib/posts";
 import { Header } from "@/components/header";
 import { CodeBlock } from "@/components/code-block";
-
-const postsDirectory = path.join(process.cwd(), "src/content/posts");
 
 export async function generateStaticParams() {
   const paths = getAllPostIds();
@@ -45,9 +41,6 @@ export default async function PostPage({
   if (!post) {
     notFound();
   }
-
-  const fullPath = path.join(postsDirectory, `${id}.mdx`);
-  const source = fs.readFileSync(fullPath, "utf8");
 
   return (
     <div className="min-h-screen">
@@ -89,7 +82,7 @@ export default async function PostPage({
           {/* Post Content */}
           <div className="prose prose-sm sm:prose-lg max-w-none prose-headings:font-semibold prose-headings:text-heading prose-h1:text-2xl sm:prose-h1:text-3xl prose-h1:mb-4 prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:mt-6 sm:prose-h2:mt-8 prose-h2:mb-3 prose-h3:text-lg sm:prose-h3:text-xl prose-h3:mt-4 sm:prose-h3:mt-6 prose-h3:mb-2 prose-p:text-foreground-muted prose-p:leading-relaxed prose-p:mb-4 prose-a:text-link prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-strong:font-semibold prose-code:text-accent prose-code:bg-code-bg prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-blockquote:border-l-accent prose-blockquote:bg-card-bg prose-blockquote:py-3 sm:prose-blockquote:py-4 prose-blockquote:px-4 sm:prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic">
             <MDXRemote
-              source={source}
+              source={post.content}
               components={{
                 pre: CodeBlock,
               }}

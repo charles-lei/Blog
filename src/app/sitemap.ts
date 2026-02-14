@@ -3,7 +3,7 @@ import { getAllPosts } from "@/lib/posts";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = getAllPosts();
-  const domain = "https://yourdomain.com";
+  const domain = "https://leilis.me";
 
   return [
     {

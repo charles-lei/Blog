@@ -6,13 +6,13 @@ tags: ["kubernetes", "gpu", "virtualization", "devops"]
 readTime: "5 min"
 ---
 
-## 简介
+# 1. 简介
 
 在深度学习和 AI 应用日益普及的今天，GPU 资源的高效利用变得尤为重要。本文介绍基于 Kubernetes (K8S) 的 GPU 虚拟化实践方案，帮助您实现 GPU 资源的灵活分配和高效管理。
 
-## 方案概述
+# 2. 方案概述
 
-### KubeSphere 多节点融合管理
+## KubeSphere 多节点融合管理
 
 KubeSphere 是一个开源的容器平台，提供了强大的多节点集群管理能力，可以方便地管理 GPU 节点。
 
@@ -20,7 +20,7 @@ KubeSphere 是一个开源的容器平台，提供了强大的多节点集群管
 
 ![KubeSphere 集群视图](https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/eLbnj8M24MmrOaNY/img/4e89c6ee-5197-4aa1-a483-be5be82c95b2.png)
 
-### GPU 虚拟化示例
+## GPU 虚拟化示例
 
 通过 GPU 虚拟化技术，可以将物理 GPU 切分为多个虚拟 GPU 供不同的 Pod 使用。
 
@@ -45,6 +45,3 @@ KubeSphere 是一个开源的容器平台，提供了强大的多节点集群管
 
 - **[Harvester](https://docs.harvesterhci.io/)** - 基于 KubeVirt 的开源 HCI 解决方案
 
----
-
-*希望这篇文章对您有所帮助！如果您有任何问题或建议，欢迎在评论区留言。*
