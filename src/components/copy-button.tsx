@@ -10,16 +10,21 @@ export function CopyButton({ text }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
   };
 
   return (
     <button
       onClick={handleCopy}
-      className="absolute top-3 right-3 p-2 rounded-md bg-border-subtle hover:bg-border text-foreground-muted hover:text-foreground transition-colors"
-      aria-label={copied ? "Copied" : "Copy code"}
+      className="p-1.5 rounded-md hover:bg-border text-foreground-muted hover:text-accent transition-all duration-200"
+      aria-label={copied ? "已复制" : "复制代码"}
+      title={copied ? "已复制" : "复制代码"}
     >
       {copied ? (
         <svg
@@ -32,6 +37,7 @@ export function CopyButton({ text }: CopyButtonProps) {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          className="text-green-400"
         >
           <polyline points="20 6 9 17 4 12" />
         </svg>

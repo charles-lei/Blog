@@ -107,9 +107,6 @@ export default async function HomePage() {
               © 2025 <span className="text-foreground-muted/60">built_with</span>{" "}
               <span className="text-accent">Next.js</span>
             </p>
-            <p>
-              {"<"}no_ads tracked={<span className="text-accent-tertiary">false</span>} /{">"}
-            </p>
           </div>
         </div>
       </footer>

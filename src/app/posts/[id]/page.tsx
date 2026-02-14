@@ -99,20 +99,6 @@ export default async function PostPage({
             >
               ← all_posts
             </Link>
-            <div className="flex gap-4">
-              <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                  post.title
-                )}&url=${encodeURIComponent(
-                  `https://yourdomain.com/posts/${post.id}`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-foreground-muted hover:text-accent font-mono transition-colors"
-              >
-                share
-              </a>
-            </div>
           </div>
         </footer>
       </main>

@@ -45,10 +45,17 @@ export async function CodeBlock({ children, className }: CodeBlockProps) {
   }
 
   return (
-    <div className="relative group">
-      <CopyButton text={codeText} />
+    <div className="relative group rounded-xl overflow-hidden border border-zinc-700 bg-[#0d1117] my-6">
+      {/* Header with language label */}
+      <div className="flex items-center justify-between px-4 py-2 bg-zinc-800/80 border-b border-zinc-700">
+        <span className="text-xs font-mono text-zinc-400 uppercase tracking-wider">
+          {language}
+        </span>
+        <CopyButton text={codeText} />
+      </div>
+      {/* Code content */}
       <div
-        className="shiki-code"
+        className="shiki-code overflow-x-auto"
         dangerouslySetInnerHTML={{ __html: highlightedHtml }}
       />
     </div>
