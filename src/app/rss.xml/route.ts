@@ -1,6 +1,6 @@
 import { getAllPosts } from "@/lib/posts";
 
-const domain = "https://yourdomain.com";
+const domain = "https://leilis.me";
 
 export async function GET() {
   const posts = getAllPosts();

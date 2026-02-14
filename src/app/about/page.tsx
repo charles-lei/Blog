@@ -9,11 +9,10 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   const skills = [
-    { name: "TypeScript", level: 90 },
-    { name: "React / Next.js", level: 85 },
-    { name: "Node.js", level: 80 },
-    { name: "Python", level: 75 },
-    { name: "Go", level: 60 },
+    { name: "Python / Ruby / Rust / Vue3", level: 90 },
+    { name: "Cloud Native Infra", level: 85 },
+    { name: "AI Native Infra ", level: 70 },
+    { name: "Robotic Software Development", level: 75 },
   ];
 
   return (
@@ -86,8 +85,8 @@ export default function AboutPage() {
               <span className="text-accent-tertiary">&quot;github.com/charles-lei&quot;</span>,
             </p>
             <p className="text-foreground-muted font-mono text-xs sm:text-sm ml-2 sm:ml-4">
-              Discord:{" "}
-              <span className="text-accent-tertiary">&quot;@discord&quot;</span>,
+              Wechat:{" "}
+              <span className="text-accent-tertiary">&quot;@ccppllxx&quot;</span>,
             </p>
             <p className="text-foreground-muted font-mono text-xs sm:text-sm">{"};"}</p>
           </div>
