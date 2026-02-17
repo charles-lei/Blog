@@ -1,0 +1,229 @@
+---
+title: "PyTorch 学习笔记 (7): 正则化技巧"
+date: "2025-11-15"
+excerpt: "过拟合是深度学习中的常见问题。本文介绍 Dropout、Batch Normalization、Weight Decay 等正则化方法，帮助你训练出泛化能力更强的模型。"
+tags: ["PyTorch", "Deep Learning", "Regularization"]
+readTime: "10 min"
+---
+
+## 过拟合问题
+
+**过拟合的表现**：
+- 训练集准确率很高
+- 测试集准确率很低
+- 模型"记住"了训练数据，而不是"学习"规律
+
+**正则化是防止过拟合的重要手段**：
+1. Dropout：随机丢弃部分神经元
+2. Batch Normalization：批量归一化
+3. Weight Decay (L2正则化)：惩罚大权重
+4. 数据增强：增加训练数据多样性
+
+## 对比不同模型
+
+### 模型1：无正则化（容易过拟合）
+
+```python
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+class OverfitNet(nn.Module):
+    """过深的网络，无正则化"""
+    def __init__(self):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(1, 256),
+            nn.ReLU(),
+            nn.Linear(256, 256),
+            nn.ReLU(),
+            nn.Linear(256, 256),
+            nn.ReLU(),
+            nn.Linear(256, 1)
+        )
+
+    def forward(self, x):
+        return self.net(x)
+```
+
+### 模型2：使用 Dropout
+
+```python
+class DropoutNet(nn.Module):
+    """使用 Dropout 防止过拟合"""
+    def __init__(self, dropout_rate=0.3):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(1, 256),
+            nn.ReLU(),
+            nn.Dropout(dropout_rate),  # Dropout层
+
+            nn.Linear(256, 256),
+            nn.ReLU(),
+            nn.Dropout(dropout_rate),
+
+            nn.Linear(256, 256),
+            nn.ReLU(),
+            nn.Dropout(dropout_rate),
+
+            nn.Linear(256, 1)
+        )
+
+    def forward(self, x):
+        return self.net(x)
+```
+
+### 模型3：使用 Batch Normalization
+
+```python
+class BatchNormNet(nn.Module):
+    """使用 Batch Normalization"""
+    def __init__(self):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(1, 256),
+            nn.BatchNorm1d(256),  # BN层
+            nn.ReLU(),
+
+            nn.Linear(256, 256),
+            nn.BatchNorm1d(256),
+            nn.ReLU(),
+
+            nn.Linear(256, 256),
+            nn.BatchNorm1d(256),
+            nn.ReLU(),
+
+            nn.Linear(256, 1)
+        )
+
+    def forward(self, x):
+        return self.net(x)
+```
+
+### 模型4：组合多种正则化
+
+```python
+class RegularizedNet(nn.Module):
+    """组合多种正则化方法"""
+    def __init__(self, dropout_rate=0.2):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(1, 128),  # 减少层数和宽度
+            nn.BatchNorm1d(128),
+            nn.ReLU(),
+            nn.Dropout(dropout_rate),
+
+            nn.Linear(128, 64),
+            nn.BatchNorm1d(64),
+            nn.ReLU(),
+            nn.Dropout(dropout_rate),
+
+            nn.Linear(64, 1)
+        )
+
+    def forward(self, x):
+        return self.net(x)
+```
+
+## Dropout 原理
+
+**训练时**：随机将一部分神经元的输出设为 0
+**测试时**：使用所有神经元，但输出按比例缩放
+
+**作用**：
+1. 防止神经元共适应（co-adaptation）
+2. 强迫网络学习冗余表示
+3. 相当于训练多个子网络的集成
+
+**常见 dropout_rate**：
+- 0.2 - 0.5：大多数场景
+- 0.3：推荐起始值
+- 大于 0.5：可能导致欠拟合
+
+**放置位置**：
+- 通常放在激活函数之后
+- 不在输出层使用
+
+## Weight Decay (L2正则化)
+
+```python
+# 在优化器中设置 weight_decay
+optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=0.001)
+```
+
+## 训练/评估模式切换
+
+```python
+# 训练时
+model.train()   # 启用 Dropout
+# ... 训练代码 ...
+
+# 评估时
+model.eval()    # 禁用 Dropout
+with torch.no_grad():
+    # ... 评估代码 ...
+```
+
+## 代码模板
+
+```python
+class MyModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.layers = nn.Sequential(
+            nn.Linear(64, 128),
+            nn.BatchNorm1d(128),  # BN 在激活前
+            nn.ReLU(),
+            nn.Dropout(0.3),      # Dropout 在激活后
+
+            nn.Linear(128, 10)
+        )
+
+    def forward(self, x):
+        return self.layers(x)
+```
+
+## 正则化方法对比
+
+| 方法 | 原理 | 使用场景 |
+|-----|------|---------|
+| Dropout | 随机丢弃神经元 | 全连接层 |
+| BatchNorm | 标准化每层输入 | 深层网络 |
+| Weight Decay | 惩罚大权重（L2正则） | 所有模型 |
+| 数据增强 | 增加训练数据多样性 | 图像/文本 |
+| 早停法 | 监控验证集损失提前停止 | 所有训练 |
+
+## 使用建议
+
+### Dropout
+- rate = 0.2 - 0.5
+- 放在全连接层之后
+- 不在输出层使用
+
+### Batch Normalization
+- 放在激活函数之前
+- 允许使用更大的学习率
+- 减少对初始化的敏感性
+
+### Weight Decay
+- 在优化器中设置：`weight_decay=0.001`
+- 值越大，正则化越强
+
+### 组合使用
+- Dropout + BatchNorm + Weight Decay
+- 注意：可能需要调整学习率
+
+## 总结
+
+正则化是提高模型泛化能力的关键：
+
+1. **Dropout**：最常用的正则化方法
+2. **BatchNorm**：加速训练，提高稳定性
+3. **Weight Decay**：简单有效的L2正则化
+4. **组合使用**：效果更佳，但需调整超参数
+
+---
+
+**上一篇**：[PyTorch 学习笔记 (6): 卷积神经网络 (CNN)](/posts/pytorch-06-cnn)
+
+**下一篇**：[PyTorch 学习笔记 (8): 序列模型 (RNN/LSTM)](/posts/pytorch-08-rnn-lstm)

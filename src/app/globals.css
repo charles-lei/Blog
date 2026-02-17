@@ -309,6 +309,33 @@ pre code {
   font-style: italic;
 }
 
+/* Table styling */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+}
+
+.prose th {
+  background: var(--card-bg);
+  color: var(--heading);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+}
+
+.prose td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  color: var(--foreground-muted);
+}
+
+.prose tr:hover {
+  background: var(--card-bg);
+}
+
 /* Line clamp utility */
 .line-clamp-2 {
   display: -webkit-box;

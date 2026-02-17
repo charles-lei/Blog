@@ -1,0 +1,241 @@
+---
+title: "PyTorch 学习笔记 (3): 线性回归"
+date: "2025-09-14"
+excerpt: "线性回归是最简单的机器学习模型，用于预测连续值。本文从手动实现到使用 nn.Module，带你理解机器学习的基本流程和训练循环五步法。"
+tags: ["PyTorch", "Deep Learning", "Machine Learning"]
+readTime: "10 min"
+---
+
+线性回归是最简单的机器学习模型，用于预测连续值。
+
+**模型**：`y = w * x + b`
+- w 是权重（斜率）
+- b 是偏置（截距）
+
+**目标**：找到最优的 w 和 b，使得预测值与真实值尽可能接近。
+
+## 准备数据
+
+生成模拟数据：`y = 3x + 0.8 + 噪声`
+
+假设真实的 `w=3, b=0.8`，我们让模型去学习这两个参数：
+
+```python
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+torch.manual_seed(42)  # 设置随机种子，保证结果可复现
+
+# 生成100个样本
+X = torch.unsqueeze(torch.linspace(0, 10, 100), dim=1)  # shape: (100, 1)
+y_true = 3 * X + 0.8  # 真实值
+
+# 添加随机噪声
+noise = torch.randn(X.shape) * 0.5
+y = y_true + noise  # 观测值（带噪声）
+
+print(f"数据形状: X={X.shape}, y={y.shape}")
+print(f"真实参数: w=3, b=0.8")
+print("我们的任务：让模型学习出 w≈3, b≈0.8")
+```
+
+## 方法一：手动实现（理解原理）
+
+### 定义模型
+
+```python
+# 手动定义参数（推荐初学者理解原理）
+w = torch.randn(1, requires_grad=True)  # 随机初始化权重
+b = torch.randn(1, requires_grad=True)  # 随机初始化偏置
+
+print(f"初始参数: w={w.item():.4f}, b={b.item():.4f}")
+
+def model(x):
+    """前向传播：y = w*x + b"""
+    return w * x + b
+```
+
+### 定义损失函数和优化器
+
+```python
+# 损失函数：均方误差 MSE = (1/n) * Σ(y_pred - y_true)^2
+def mse_loss(y_pred, y_true):
+    return ((y_pred - y_true) ** 2).mean()
+
+# 优化器：随机梯度下降 SGD
+learning_rate = 0.01  # 学习率（步长）
+
+print(f"损失函数: MSE (均方误差)")
+print(f"优化器: SGD (随机梯度下降)")
+print(f"学习率: {learning_rate}")
+```
+
+### 训练循环
+
+```python
+epochs = 200  # 训练轮数
+loss_history = []
+
+for epoch in range(epochs):
+    # === 前向传播 ===
+    y_pred = model(X)  # 计算预测值
+
+    # === 计算损失 ===
+    loss = mse_loss(y_pred, y)
+
+    # === 反向传播 ===
+    loss.backward()  # 自动计算梯度
+
+    # === 更新参数（手动实现梯度下降）===
+    with torch.no_grad():  # 更新参数不需要梯度追踪
+        w -= learning_rate * w.grad
+        b -= learning_rate * b.grad
+
+        # 清空梯度（非常重要！）
+        w.grad.zero_()
+        b.grad.zero_()
+
+    # 记录损失
+    loss_history.append(loss.item())
+
+    # 每20轮打印一次
+    if (epoch + 1) % 20 == 0:
+        print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}, w: {w.item():.4f}, b: {b.item():.4f}")
+
+print(f"\n学习到的参数: w={w.item():.4f}, b={b.item():.4f}")
+print(f"真实参数: w=3.0000, b=0.8000")
+```
+
+## 方法二：使用 nn.Module（标准方式）
+
+这是实际项目中更常用的方式。
+
+### 定义模型
+
+```python
+class LinearRegression(nn.Module):
+    """
+    自定义模型类，继承自 nn.Module
+
+    必须实现两个方法：
+    1. __init__(): 定义模型中的层
+    2. forward(): 定义前向传播
+    """
+
+    def __init__(self):
+        super().__init__()
+        # nn.Linear(in_features, out_features)
+        self.linear = nn.Linear(1, 1)  # 一元线性回归：输入1维，输出1维
+
+    def forward(self, x):
+        """前向传播：定义如何从输入得到输出"""
+        return self.linear(x)
+
+# 创建模型实例
+model = LinearRegression()
+print(f"模型结构:\n{model}")
+print(f"初始权重: {model.linear.weight.item():.4f}")
+print(f"初始偏置: {model.linear.bias.item():.4f}")
+```
+
+### 定义损失函数和优化器
+
+```python
+# 损失函数：PyTorch 提供的均方误差
+criterion = nn.MSELoss()
+
+# 优化器：PyTorch 提供的 SGD
+optimizer = optim.SGD(model.parameters(), lr=0.01)
+
+print(f"损失函数: {criterion}")
+print(f"优化器: {optimizer}")
+```
+
+### 训练循环（标准模板）
+
+```python
+epochs = 200
+loss_history = []
+
+for epoch in range(epochs):
+    # === 步骤1：清空梯度 ===
+    optimizer.zero_grad()
+
+    # === 步骤2：前向传播 ===
+    y_pred = model(X)
+
+    # === 步骤3：计算损失 ===
+    loss = criterion(y_pred, y)
+
+    # === 步骤4：反向传播 ===
+    loss.backward()
+
+    # === 步骤5：更新参数 ===
+    optimizer.step()
+
+    # 记录损失
+    loss_history.append(loss.item())
+
+    if (epoch + 1) % 20 == 0:
+        w = model.linear.weight.item()
+        b = model.linear.bias.item()
+        print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}, w: {w:.4f}, b: {b:.4f}")
+
+print(f"\n学习到的参数: w={model.linear.weight.item():.4f}, b={model.linear.bias.item():.4f}")
+```
+
+## 模型保存与加载
+
+```python
+# 保存模型
+torch.save(model.state_dict(), 'linear_model.pth')
+print("模型已保存到 linear_model.pth")
+
+# 加载模型
+model_loaded = LinearRegression()
+model_loaded.load_state_dict(torch.load('linear_model.pth'))
+print("模型加载成功！")
+```
+
+## 训练循环五步法（必须牢记！）
+
+```python
+for epoch in range(epochs):
+    # 1. 清空梯度（防止梯度累加）
+    optimizer.zero_grad()
+
+    # 2. 前向传播（计算预测值）
+    y_pred = model(X)
+
+    # 3. 计算损失（衡量预测与真实值的差距）
+    loss = criterion(y_pred, y)
+
+    # 4. 反向传播（计算梯度）
+    loss.backward()
+
+    # 5. 更新参数（根据梯度调整参数）
+    optimizer.step()
+```
+
+**这个五步法适用于所有神经网络训练！**
+
+## 总结
+
+| 方法 | 优点 | 缺点 |
+|-----|------|------|
+| 手动实现 | 理解原理 | 代码多，易出错 |
+| nn.Module | 规范、可复用 | 需要理解类结构 |
+
+### 关键概念
+
+- **损失函数**：MSE（均方误差），衡量预测与真实值的差距
+- **优化器**：SGD（随机梯度下降），根据梯度更新参数
+- **学习率**：控制参数更新的步长
+- **Epoch**：完整遍历一次训练数据
+
+---
+
+**上一篇**：[PyTorch 学习笔记 (2): Tensor 操作](/posts/pytorch-02-tensor)
+
+**下一篇**：[PyTorch 学习笔记 (4): 逻辑回归](/posts/pytorch-04-logistic-regression)

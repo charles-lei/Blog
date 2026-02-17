@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import { getAllPostIds, getPostData } from "@/lib/posts";
 import { Header } from "@/components/header";
 import { CodeBlock } from "@/components/code-block";
@@ -80,9 +81,14 @@ export default async function PostPage({
           </header>
 
           {/* Post Content */}
-          <div className="prose prose-sm sm:prose-lg max-w-none prose-headings:font-semibold prose-headings:text-heading prose-h1:text-2xl sm:prose-h1:text-3xl prose-h1:mb-4 prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:mt-6 sm:prose-h2:mt-8 prose-h2:mb-3 prose-h3:text-lg sm:prose-h3:text-xl prose-h3:mt-4 sm:prose-h3:mt-6 prose-h3:mb-2 prose-p:text-foreground-muted prose-p:leading-relaxed prose-p:mb-4 prose-a:text-link prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-strong:font-semibold prose-code:text-accent prose-code:bg-code-bg prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-blockquote:border-l-accent prose-blockquote:bg-card-bg prose-blockquote:py-3 sm:prose-blockquote:py-4 prose-blockquote:px-4 sm:prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic">
+          <div className="prose prose-sm sm:prose-lg max-w-none prose-headings:font-semibold prose-headings:text-heading prose-h1:text-2xl sm:prose-h1:text-3xl prose-h1:mb-4 prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:mt-6 sm:prose-h2:mt-8 prose-h2:mb-3 prose-h3:text-lg sm:prose-h3:text-xl prose-h3:mt-4 sm:prose-h3:mt-6 prose-h3:mb-2 prose-p:text-foreground-muted prose-p:leading-relaxed prose-p:mb-4 prose-a:text-link prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-strong:font-semibold prose-code:text-accent prose-code:bg-code-bg prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-blockquote:border-l-accent prose-blockquote:bg-card-bg prose-blockquote:py-3 sm:prose-blockquote:py-4 prose-blockquote:px-4 sm:prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-table:w-full prose-table:border-collapse prose-table:text-sm prose-th:bg-card-bg prose-th:p-2 prose-th:text-left prose-th:font-semibold prose-th:text-foreground prose-th:border prose-th:border-border prose-td:p-2 prose-td:border prose-td:border-border prose-td:text-foreground-muted">
             <MDXRemote
               source={post.content}
+              options={{
+                mdxOptions: {
+                  remarkPlugins: [remarkGfm],
+                },
+              }}
               components={{
                 pre: CodeBlock,
               }}
