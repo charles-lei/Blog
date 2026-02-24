@@ -1,4 +1,4 @@
-# Geek Blog
+# Lei Blog
 
 A minimalist, tech-focused personal blog built with Next.js, TypeScript, and Tailwind CSS. Features a clean dark theme with monospace fonts and a terminal-inspired aesthetic.
 

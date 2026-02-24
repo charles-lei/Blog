@@ -14,6 +14,7 @@ export function Header({ currentPath, githubUrl = "https://github.com" }: Header
 
   const navLinks = [
     { href: "/", label: "Home" },
+    { href: "/archives", label: "Archives" },
     { href: "/tags", label: "Tags" },
     { href: "/about", label: "About" },
   ];
